@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  discount: 9.99
+  expires_at: 2024-09-13 00:18:54
+  new_car: one
+  upcoming_car: one
+  electric_car: one
+
+two:
+  title: MyString
+  description: MyText
+  discount: 9.99
+  expires_at: 2024-09-13 00:18:54
+  new_car: two
+  upcoming_car: two
+  electric_car: two

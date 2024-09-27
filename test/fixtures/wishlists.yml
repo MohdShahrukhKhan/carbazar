@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  new_car: one
+  upcoming_car: one
+  electric_car: one
+
+two:
+  user: two
+  new_car: two
+  upcoming_car: two
+  electric_car: two
