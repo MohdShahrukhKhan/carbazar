@@ -11,6 +11,7 @@ class Car < ApplicationRecord
     super + ['brand_id']
   end
 
+  
 
   
 

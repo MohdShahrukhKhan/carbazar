@@ -35,38 +35,80 @@ class CarsController < ApplicationController
   # end
 
 
+  # def index
+  #   @cars = Car.includes(:features) # Eager load features to avoid N+1 query
+  
+  #   # Filtering by price range
+  #   if params[:min_price].present? && params[:max_price].present?
+  #     @cars = @cars.by_price_range(params[:min_price], params[:max_price])
+  #   end
+  
+  #   # Filtering by body type
+  #   if params[:body_type].present?
+  #     @cars = @cars.by_body_type(params[:body_type])
+  #   end
+  
+  #   # Filtering by fuel type
+  #   if params[:fuel_type].present?
+  #     @cars = @cars.by_fuel_type(params[:fuel_type])
+  #   end
+  
+  #   # Filtering by car type (new or upcoming)
+  #   case params[:car_type]
+  #   when 'new'
+  #     @cars = @cars.new_cars
+  #   when 'upcoming'
+  #     @cars = @cars.upcoming_cars
+  #   end
+  
+  #   # Pagination (assuming you're using Kaminari or WillPaginate)
+  #   @cars = @cars.page(params[:page]).per(10) # Customize items per page as needed
+  
+  #   # Render JSON with car details including features
+  #   render json: @cars.as_json(include: :features), status: :ok
+  # end
+
+
+
   def index
-    @cars = Car.includes(:features) # Eager load features to avoid N+1 query
-  
-    # Filtering by price range
-    if params[:min_price].present? && params[:max_price].present?
-      @cars = @cars.by_price_range(params[:min_price], params[:max_price])
-    end
-  
-    # Filtering by body type
-    if params[:body_type].present?
-      @cars = @cars.by_body_type(params[:body_type])
-    end
-  
-    # Filtering by fuel type
-    if params[:fuel_type].present?
-      @cars = @cars.by_fuel_type(params[:fuel_type])
-    end
-  
-    # Filtering by car type (new or upcoming)
-    case params[:car_type]
-    when 'new'
-      @cars = @cars.new_cars
-    when 'upcoming'
-      @cars = @cars.upcoming_cars
-    end
-  
-    # Pagination (assuming you're using Kaminari or WillPaginate)
-    @cars = @cars.page(params[:page]).per(10) # Customize items per page as needed
-  
-    # Render JSON with car details including features
-    render json: @cars.as_json(include: :features), status: :ok
+  @cars = Car.includes(:features) # Eager load features to avoid N+1 query
+
+  # Filtering by price range
+  if params[:min_price].present? && params[:max_price].present?
+    @cars = @cars.by_price_range(params[:min_price], params[:max_price])
   end
+
+  # Filtering by body type
+  if params[:body_type].present?
+    @cars = @cars.by_body_type(params[:body_type])
+  end
+
+  # Filtering by fuel type
+  if params[:fuel_type].present?
+    @cars = @cars.by_fuel_type(params[:fuel_type])
+  end
+
+  # Filtering by car type (new or upcoming)
+  case params[:car_type]
+  when 'new'
+    @cars = @cars.new_cars
+  when 'upcoming'
+    @cars = @cars.upcoming_cars
+  end
+
+  # Pagination (assuming you're using Kaminari or WillPaginate)
+  @cars = @cars.page(params[:page]).per(10) # Customize items per page as needed
+
+  # Render JSON with car details, excluding `feature_id` in the features
+  render json: @cars.as_json(
+    include: {
+      features: {
+        except: [:feature_id] # Exclude feature_id from each feature
+      }
+    }
+  ), status: :ok
+end
+
   
 
   # GET /cars/:id

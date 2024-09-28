@@ -45,15 +45,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_070532) do
 
   create_table "cars", force: :cascade do |t|
     t.string "name"
-    t.string "brand"
+    t.string "brand_id"
     t.string "body_type"
     t.string "car_types"
     t.date "launch_date"
-    t.integer "feature_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "brand_id"
-    t.index ["feature_id"], name: "index_cars_on_feature_id"
   end
 
   create_table "dealers", force: :cascade do |t|
@@ -120,5 +117,4 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_070532) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "cars", "features"
 end
