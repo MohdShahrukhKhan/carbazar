@@ -1,5 +1,13 @@
 class WishlistsController < ApplicationController
-  before_action :set_user
+  before_action :set_user,  only: %i[show edit update destroy]
+
+
+  def  index
+    wishlist = Wishlist.all 
+    render json: wishlist
+
+    
+  end
 
   def create
     # Find if the wishlist for the feature already exists for this user
@@ -30,7 +38,7 @@ class WishlistsController < ApplicationController
   def wishlist_params
     params.require(:wishlist).permit(:user_id, :feature_id)
   end
-end
+end 
 
   
 
