@@ -3,7 +3,14 @@ class FeaturesController < ApplicationController
   # API to get all features
   def index
     features = Feature.all
-    render json: features
+    render json: features.map { |feature|
+      {
+        id: feature.id,
+        variant_name: feature.variant_name,
+        price: feature.price.to_f,
+        offers: feature.offers.map { |offer| { offer_name: offer.offer_name, discount: offer.discount } }
+      }
+    }
   end
 
   def show

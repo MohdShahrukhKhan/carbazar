@@ -1,6 +1,3 @@
-
-
-
 # app/models/user.rb
 class User < ApplicationRecord
     has_secure_password  # This adds methods for setting and authenticating passwords
