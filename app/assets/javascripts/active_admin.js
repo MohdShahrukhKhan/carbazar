@@ -1,4 +1,5 @@
 //= require active_admin/base
+
 $(document).ready(function() {
     // Hide launch_date field if car type is 'New Car'
     function toggleLaunchDateField() {
@@ -18,4 +19,6 @@ $(document).ready(function() {
       toggleLaunchDateField();
     });
   });
+
+
   

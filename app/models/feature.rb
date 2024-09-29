@@ -41,6 +41,7 @@ class Feature < ApplicationRecord
   belongs_to :car
   has_many :offers, dependent: :destroy
   has_many :wishlists
+  has_many :colours
 
 
   ransack_alias :car_id_eq, :car

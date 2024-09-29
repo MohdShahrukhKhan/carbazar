@@ -6,12 +6,20 @@ Rails.application.routes.draw do
 
 
   resources :cars
-  resources :features
+  resources :features do
+  collection do 
+   post :emi 
+  end   
+  end
+
   resources :offers
   resources :wishlists
+
+
   resources :dealers
 
   resources :users
+  resources :colours
 
 
   
