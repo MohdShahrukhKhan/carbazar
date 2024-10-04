@@ -6,6 +6,8 @@ class CreateOffers < ActiveRecord::Migration[7.0]
       t.date :start_date
       t.date :end_date
       t.integer :feature_id
+      t.integer :car_id
+      t.integer :variant_id
 
       t.timestamps
     end

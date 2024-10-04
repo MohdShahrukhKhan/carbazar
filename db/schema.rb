@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_26_070532) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_03_193348) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -37,6 +37,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_070532) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "bookings", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "car_id"
+    t.integer "variant_id"
+    t.integer "status", default: 0
+    t.datetime "booking_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "brands", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -55,17 +65,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_070532) do
 
   create_table "dealers", force: :cascade do |t|
     t.string "name"
+    t.integer "brand_id"
+    t.string "city"
     t.string "address"
     t.string "contact_number"
-    t.integer "brand_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "features", force: :cascade do |t|
-    t.string "variant_name"
-    t.string "price"
-    t.string "colour"
+    t.integer "car_id"
     t.string "city_mileage"
     t.string "fuel_type"
     t.integer "engine_displacement"
@@ -89,7 +98,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_070532) do
     t.boolean "engine_start_stop_button"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "car_id"
   end
 
   create_table "offers", force: :cascade do |t|
@@ -98,6 +106,39 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_070532) do
     t.date "start_date"
     t.date "end_date"
     t.integer "feature_id"
+    t.integer "car_id"
+    t.integer "variant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "plans", force: :cascade do |t|
+    t.string "name"
+    t.integer "duration"
+    t.float "price"
+    t.text "details"
+    t.integer "plan_type"
+    t.integer "months"
+    t.decimal "price_monthly", precision: 10, scale: 2
+    t.decimal "price_yearly", precision: 10, scale: 2
+    t.integer "limit"
+    t.integer "limit_type"
+    t.boolean "discount", default: false
+    t.string "discount_type"
+    t.integer "discount_percentage", default: 0
+    t.text "benefits"
+    t.boolean "coming_soon", default: false
+    t.boolean "active", default: true
+    t.boolean "available", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer "plan_id"
+    t.integer "user_id"
+    t.datetime "started_at"
+    t.datetime "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -110,9 +151,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_070532) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "variants", force: :cascade do |t|
+    t.string "variant"
+    t.string "price"
+    t.string "colour"
+    t.integer "car_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "wishlists", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "feature_id"
+    t.integer "car_id"
+    t.integer "variant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

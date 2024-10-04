@@ -1,10 +1,16 @@
 class DealersController < ApplicationController
     before_action :set_dealer, only: %i[show edit update destroy]
   
-    def index
-      @dealers = Dealer.all
-      render json: @dealers
-    end
+def index
+  city = params[:city]
+
+  dealers = Dealer.all
+
+  dealers = dealers.where(city: city) if city.present?
+
+  render json: dealers
+end
+
   
     def show
       render json: @dealer
@@ -26,6 +32,9 @@ class DealersController < ApplicationController
         render json: @dealer.errors, status: :unprocessable_entity
       end
     end
+
+
+
   
     def destroy
       @dealer.destroy
@@ -39,7 +48,7 @@ class DealersController < ApplicationController
     end
   
     def dealer_params
-      params.require(:dealer).permit(:name, :address, :contact_number, :brand_id)
+      params.require(:dealer).permit(:name, :address, :city, :contact_number, :brand_id)
     end
   end
   

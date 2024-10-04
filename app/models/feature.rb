@@ -38,10 +38,9 @@
 # end
 
 class Feature < ApplicationRecord
-  belongs_to :car
-  has_many :offers, dependent: :destroy
-  has_many :wishlists
-  has_many :colours
+ belongs_to :car
+ has_many :offers,dependent: :destroy 
+ # has_many :colours
 
 
   ransack_alias :car_id_eq, :car
@@ -50,18 +49,18 @@ class Feature < ApplicationRecord
     super + ['car_id']
   end
 
-  def discounted_price
-    active_offer = offers.where('start_date <= ? AND end_date >= ?', Date.today, Date.today).first
+  # def discounted_price
+  #   active_offer = offers.where('start_date <= ? AND end_date >= ?', Date.today, Date.today).first
 
-    if active_offer.present?
-      discount_amount = (price.to_f * active_offer.discount / 100)
-      price.to_f - discount_amount
-    else
-      price.to_f
-    end
-  end
+  #   if active_offer.present?
+  #     discount_amount = (price.to_f * active_offer.discount / 100)
+  #     price.to_f - discount_amount
+  #   else
+  #     price.to_f
+  #   end
+  # end
 
-  validates :variant_name, :price, :colour, :city_mileage, :fuel_type, :engine_displacement,
+  validates :city_mileage, :fuel_type, :engine_displacement,
             :no_of_cylinders, :max_power, :max_torque, :seating_capacity, :transmission_type,
             :boot_space, :fuel_tank_capacity, :body_type, presence: true
 
@@ -69,4 +68,7 @@ class Feature < ApplicationRecord
   validates :transmission_type, inclusion: { in: ['Manual', 'Automatic', 'CVT', 'Dual-Clutch'], message: "%{value} is not a valid transmission type" }
   validates :body_type, inclusion: { in: ['SUV', 'Sedan', 'Hatchback', 'Coupe', 'Convertible'], message: "%{value} is not a valid body type" }
   validates :engine_displacement, :no_of_cylinders, :seating_capacity, :boot_space, :fuel_tank_capacity, numericality: { greater_than: 0 }
+
+
+  
 end

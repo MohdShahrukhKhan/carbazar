@@ -5,7 +5,7 @@ class Dealer < ApplicationRecord
 
   # Allow Ransack to search by attributes
   def self.ransackable_attributes(auth_object = nil)
-    super + ['brand_id', 'address', 'name', 'contact_number']
+    super + ['brand_id', 'address', 'name', 'contact_number','city']
   end
 end
 

@@ -1,17 +1,18 @@
-# class Offer < ApplicationRecord
-#   belongs_to :feature   
-#     # Additional validations, if needed
-#     validates :offer_name, presence: true
-#     validates :discount, presence, numericality:{greater_than: 0, less_than_or_equal_to:0}
-#     validates :start_date, presence: true
-#     validates :end_date, presence: true
-#   end
 
 class Offer < ApplicationRecord
+  belongs_to :car
+  belongs_to :variant
+  # Assuming you have a Feature model, you can include this line if necessary
   belongs_to :feature
 
-  validates :offer_name, presence: true
-  validates :discount, presence: true, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
-  validates :start_date, presence: true
-  validates :end_date, presence: true
+ 
+
+
+  def discounted_price
+    return nil if discount.nil? || variant.nil? || variant.price.nil?
+
+    original_price = variant.price.to_f # Ensure the price is a float for calculations
+    discount_amount = (original_price * discount) / 100 # Calculate the discount amount
+    original_price - discount_amount # Calculate the final price after discount
+  end
 end

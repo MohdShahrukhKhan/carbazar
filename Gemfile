@@ -66,7 +66,16 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem 'ransack'
+  gem 'active_model_serializers'
+
+
+
 
 # Gemfile
 gem 'byebug'
 end
+
+
+
+gem 'dotenv-rails', groups: [:development, :test]
+ gem 'pagy'

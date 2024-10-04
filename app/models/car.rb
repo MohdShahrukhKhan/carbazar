@@ -1,8 +1,15 @@
 class Car < ApplicationRecord
   belongs_to :brand
-
+  has_many :offers
   has_many :features, dependent: :destroy
+  has_many :wishlists
+  has_many :bookings
+ # has_many :variants, dependent: :destroy
   accepts_nested_attributes_for :features, allow_destroy: true
+ # accepts_nested_attributes_for :variants, allow_destroy: true
+  has_many :variants, dependent: :destroy
+  accepts_nested_attributes_for :variants, allow_destroy: true
+
 
   # Allow Ransack to search by brand_id
   ransack_alias :brand_id_eq, :brand_id
@@ -11,9 +18,6 @@ class Car < ApplicationRecord
     super + ['brand_id']
   end
 
-  
-
-  
 
   validates :name, presence: true
   validates :brand_id, presence: true

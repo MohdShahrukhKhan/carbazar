@@ -6,20 +6,36 @@ Rails.application.routes.draw do
 
 
   resources :cars
-  resources :features do
-  collection do 
-   post :emi 
-  end   
-  end
+  resources :features 
+  
+
 
   resources :offers
   resources :wishlists
+  resources :brands
 
 
   resources :dealers
 
-  resources :users
+  resources :users do 
+    collection do
+      post :login
+    end
+
+end
+
+
   resources :colours
+  resources :plans
+  resources :variants do
+  member do
+    get :emi # Use POST instead of GET
+  end
+end
+
+  resources :bookings
+ 
+
 
 
   
