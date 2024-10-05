@@ -4,6 +4,7 @@ class Car < ApplicationRecord
   has_many :features, dependent: :destroy
   has_many :wishlists
   has_many :bookings
+  has_many :review
  # has_many :variants, dependent: :destroy
   accepts_nested_attributes_for :features, allow_destroy: true
  # accepts_nested_attributes_for :variants, allow_destroy: true

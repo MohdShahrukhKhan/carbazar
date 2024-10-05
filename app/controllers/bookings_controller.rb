@@ -51,25 +51,45 @@ class BookingsController < ApplicationController
 
   def index
     if params[:status].present?
-      bookings = current_user.bookings.where(status: params[:status]).includes(:car, :variant)
+      bookings = @current_user.bookings.where(status: params[:status]).includes(:car, :variant)
     else
-      bookings = current_user.bookings.includes(:car, :variant)
+      bookings = @current_user.bookings.includes(:car, :variant)
     end
     render json: bookings, include: [:car, :variant], status: :ok
   end
 
   def show
-    render json: @booking, include: [:car, :variant], status: :ok
-  end
+  render json: {
+    booking: @booking,
+    history: @booking.history,
+    notifications: @booking.notifications # If you want to include notifications
+  }
+end
 
   def create
-    booking = current_user.bookings.build(booking_params)  # Associate with current user
+    booking = @current_user.bookings.build(booking_params)  # Associate with current user
     if booking.save
       render json: booking, include: [:car, :variant], status: :created
     else
       render json: { errors: booking.errors.full_messages }, status: :unprocessable_entity
     end
+
   end
+
+# def update_status
+#   if @booking.update(status: params[:status])
+#     # Create a notification for the user
+#     Notification.create(user: @booking.user, booking: @booking, content: "Your booking status has been updated to #{params[:status]}")
+#     # Add a record to history
+#     @booking.history << { status: params[:status], updated_at: Time.current }
+#     @booking.save
+#     render json: @booking, status: :ok
+#   else
+#     render json: { errors: @booking.errors.full_messages }, status: :unprocessable_entity
+#   end
+# end
+
+
 
   def update
     if @booking.update(booking_params)

@@ -1,6 +1,6 @@
 ActiveAdmin.register Car do
   permit_params :name, :body_type, :car_types, :brand_id, :launch_date, 
-                variants_attributes: [:id, :variant_name, :price, :colour, :car_id],
+                variants_attributes: [:id, :variant, :price, :colour, :car_id, :_destroy],
                 features_attributes: [
                   :id, :city_mileage, :car_id, :fuel_type, 
                   :engine_displacement, :no_of_cylinders, :max_power, :max_torque, 
@@ -10,6 +10,8 @@ ActiveAdmin.register Car do
                   :alloy_wheels, :multi_function_steering_wheel, :engine_start_stop_button, 
                   :_destroy
                 ]
+
+
 
 
 index do
@@ -39,13 +41,13 @@ index do
     f.semantic_errors # Show errors on :base
 
     # Car details
-    f.inputs 'Car Details' do
-      f.input :name
-      f.input :brand, as: :select, collection: Brand.all.map { |brand| [brand.name, brand.id] }
-      f.input :body_type, as: :select, collection: ['SUV', 'Sedan', 'Hatchback', 'Coupe', 'Convertible']
-      f.input :car_types, as: :select, collection: ['New Car', 'Upcoming Car']
-      f.input :launch_date, as: :datepicker
-    end
+  f.inputs 'Car Details' do
+    f.input :name
+    f.input :brand, as: :select, collection: Brand.all.map { |brand| [brand.name, brand.id] }
+    f.input :body_type, as: :select, collection: ['SUV', 'Sedan', 'Hatchback', 'Coupe', 'Convertible']
+    f.input :car_types, as: :select, collection: ['New Car', 'Upcoming Car'], input_html: { id: 'car_car_types' } # Add ID for JS
+    f.input :launch_date, as: :datepicker, input_html: { id: 'car_launch_date_input' } # Add ID for JS
+  end
 
     # Nested variants form
     f.inputs 'Car Variants' do
@@ -111,6 +113,7 @@ index do
     # Panel for Features
     panel "Car Features" do
       table_for car.features do
+        
         column :city_mileage
         column :fuel_type
         column :engine_displacement

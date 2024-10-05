@@ -3,6 +3,9 @@ class Variant < ApplicationRecord
   has_many :offers
   has_many :wishlists
   has_many :bookings
+  has_many :features
+  has_many :review
+
 	ransack_alias :car_id_eq, :car
 
 

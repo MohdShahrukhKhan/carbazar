@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resources :users do 
     collection do
       post :login
+      get :booking_history
     end
 
 end
@@ -31,9 +32,18 @@ end
   member do
     get :emi # Use POST instead of GET
   end
-end
+  end
 
-  resources :bookings
+  resources :bookings do
+    member do
+      patch :update_status
+    end
+  end
+
+  resources :notifications
+  resources :reviews, only: [:index, :create]
+
+
  
 
 

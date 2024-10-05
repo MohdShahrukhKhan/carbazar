@@ -1,25 +1,29 @@
 //= require active_admin/base
 
-$(document).ready(function() {
-  
-    function toggleLaunchDateField() {
-      var carType = $('#car_types_select').val();
-      console.log("Car Type Selected: ", carType); // Debugging line to check carType value
-      if (carType === 'New Car') {
-        $('.launch-date-field').hide();  // Hiding the field itself
-      } else {
-        $('.launch-date-field').show();  // Showing the field itself
-      }
+// app/assets/javascripts/active_admin/cars.js
+
+document.addEventListener("DOMContentLoaded", function() {
+  const carTypeSelect = document.querySelector('#car_car_types');
+  const launchDateInput = document.querySelector('#car_launch_date_input');
+
+  function toggleLaunchDateInput() {
+    if (carTypeSelect.value === 'New Car') {
+      launchDateInput.style.display = 'none'; // Hide launch date input
+      launchDateInput.querySelector('input').value = ''; // Clear value
+    } else {
+      launchDateInput.style.display = 'block'; // Show launch date input
     }
-  
-    // Call function on document ready
-    toggleLaunchDateField();
-  
-    // Change event for dropdown
-    $('#car_types_select').change(function() {
-      toggleLaunchDateField();
-    });
+  }
+
+  // Initial check
+  toggleLaunchDateInput();
+
+  // Listen for changes on the car types select
+  carTypeSelect.addEventListener('change', toggleLaunchDateInput);
 });
+
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
   // Toggle fields based on plan type

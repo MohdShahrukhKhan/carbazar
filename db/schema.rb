@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_03_193348) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_05_113822) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -75,6 +75,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_03_193348) do
 
   create_table "features", force: :cascade do |t|
     t.integer "car_id"
+    t.integer "variant_id"
     t.string "city_mileage"
     t.string "fuel_type"
     t.integer "engine_displacement"
@@ -98,6 +99,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_03_193348) do
     t.boolean "engine_start_stop_button"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "booking_id"
+    t.text "message", null: false
+    t.boolean "read", default: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "offers", force: :cascade do |t|
@@ -130,6 +139,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_03_193348) do
     t.boolean "coming_soon", default: false
     t.boolean "active", default: true
     t.boolean "available", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer "rating"
+    t.text "comment"
+    t.integer "user_id"
+    t.integer "car_id"
+    t.integer "variant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

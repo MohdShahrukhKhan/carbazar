@@ -48,4 +48,14 @@ ActiveAdmin.register Booking do
     end
     active_admin_comments
   end
+
+controller do
+    def update
+      super do |success, _failure|
+        # Additional actions can be performed here after the booking is updated
+      end
+    end
+  end
+
+  
 end

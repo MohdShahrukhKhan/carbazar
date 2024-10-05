@@ -1,38 +1,64 @@
+# # app/controllers/reviews_controller.rb
+# class ReviewsController < ApplicationController
+#   def index
+#     if params[:car_id]
+#       @reviews = Review.where(car_id: params[:car_id])
+#     elsif params[:variant_id]
+#       @reviews = Review.where(variant_id: params[:variant_id])
+#     else
+#       @reviews = Review.all
+#     end
+
+#     render json: @reviews, each_serializer: ReviewSerializer
+#   end
+
+#   def create
+#     @review = Review.new(review_params.merge(user_id: current_user.id))
+
+#     if @review.save
+#       render json: @review, status: :created
+#     else
+#       render json: @review.errors, status: :unprocessable_entity
+#     end
+#   end
+
+#   private
+
+#   def review_params
+#     params.require(:review).permit(:rating, :comment, :car_id, :variant_id)
+#   end
+# end
+
+
+# app/controllers/reviews_controller.rb
 class ReviewsController < ApplicationController
-    before_action :set_reviewable
-    
-    def create
-      # Ensure @reviewable is set to a valid resource
-      if @reviewable.nil?
-        return render json: { error: 'Reviewable resource not found' }, status: :not_found
-      end
-    
-      # Create the review associated with the reviewable resource
-      @review = @reviewable.reviews.new(review_params)
-      @review.user = current_user # Assuming you have current_user set up
-    
-      if @review.save
-        render json: @review, status: :created
-      else
-        render json: @review.errors, status: :unprocessable_entity
-      end
+  # skip_before_action :authenticate_user!, only: [:create] # Ensure user is authenticated for creating a review
+
+  def index
+    if params[:car_id]
+      @reviews = Review.where(car_id: params[:car_id])
+    elsif params[:variant_id]
+      @reviews = Review.where(variant_id: params[:variant_id])
+    else
+      @reviews = Review.all
     end
-  
-    private
-    def set_reviewable
-        Rails.logger.debug("Reviewable params: #{params.inspect}")
-        @reviewable = 
-          if params[:new_car_id]
-            NewCar.find_by(id: params[:new_car_id])
-          elsif params[:upcoming_car_id]
-            UpcomingCar.find_by(id: params[:upcoming_car_id])
-          elsif params[:electric_car_id]
-            ElectricCar.find_by(id: params[:electric_car_id])
-          end
-      end
-      
-    def review_params
-      params.require(:review).permit(:rating, :comment)
+
+    render json: @reviews, each_serializer: ReviewSerializer
+  end
+
+  def create
+    @review = Review.new(review_params.merge(user_id: current_user.id))
+
+    if @review.save
+      render json: @review, status: :created
+    else
+      render json: @review.errors, status: :unprocessable_entity
     end
   end
-  
+
+  private
+
+  def review_params
+    params.require(:review).permit(:rating, :comment, :car_id, :variant_id)
+  end
+end

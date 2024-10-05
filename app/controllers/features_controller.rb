@@ -27,7 +27,7 @@ def create
   # Strong parameters to whitelist feature attributes for update
   def feature_params
    params.require(:feature).permit(
-      :car_id, :city_mileage, :fuel_type, :engine_displacement, :no_of_cylinders, 
+      :car_id,:variant_id, :city_mileage, :fuel_type, :engine_displacement, :no_of_cylinders, 
       :max_power, :max_torque, :seating_capacity, :transmission_type, :boot_space, 
       :fuel_tank_capacity, :body_type, :ground_clearance_unladen, :power_steering, 
       :abs, :air_conditioner, :driver_airbag, :passenger_airbag, :automatic_climate_control, 

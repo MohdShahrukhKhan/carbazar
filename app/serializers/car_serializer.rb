@@ -35,8 +35,9 @@ class CarSerializer < ActiveModel::Serializer
   attribute :brand_name do |object|
       object.object.brand.name
     end
-
-
+  has_many :variants
+  has_many :features
+  
 
   def variant_names
     object.variants.present? ? object.variants.pluck(:variant) : []

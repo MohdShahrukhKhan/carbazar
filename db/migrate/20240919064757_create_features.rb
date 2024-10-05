@@ -38,6 +38,7 @@ class CreateFeatures < ActiveRecord::Migration[7.0]
   def change
     create_table :features do |t|
       t.integer :car_id
+      t.integer :variant_id
       t.string :city_mileage
       t.string :fuel_type
       t.integer :engine_displacement

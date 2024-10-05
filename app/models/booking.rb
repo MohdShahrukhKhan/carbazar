@@ -4,6 +4,7 @@ class Booking < ApplicationRecord
   belongs_to :user
   belongs_to :car
   belongs_to :variant
+  has_many :notifications
 
   validates :booking_date, presence: true
   validates :status, inclusion: { in: statuses.keys }
@@ -11,5 +12,16 @@ class Booking < ApplicationRecord
     super + ['user_id', 'car_id', 'variant_id','status']
   end
 
+ after_update :create_status_change_notification, if: :saved_change_to_status?
+
+private
+
+  def create_status_change_notification
+    notifications.create(
+      message: "Booking status changed to #{status}",
+      booking_id: id,
+      user_id: user_id # Assuming you have a user_id to associate the notification
+    )
+  end
 
 end
