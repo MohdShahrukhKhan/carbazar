@@ -160,8 +160,7 @@ ActiveAdmin.register Plan do
       f.input :active
       f.input :available
 
-      f.input :discounted_price_monthly, input_html: { readonly: true, id: 'discounted_price_monthly' }, label: "Discounted Price Monthly"
-      f.input :discounted_price_yearly, input_html: { readonly: true, id: 'discounted_price_yearly' }, label: "Discounted Price Yearly"
+     
     end
     f.actions
   end

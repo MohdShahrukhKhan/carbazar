@@ -2,6 +2,9 @@ class Plan < ApplicationRecord
   enum plan_type: { free: 0, paid: 1 }
   validates :price_monthly, :price_yearly, presence: true, if: :paid_plan?
   validates :discount, :discount_type, :discount_percentage, presence: true, if: :paid_plan?
+  validates :duration, presence: true
+  validates :name, presence: true
+  validates :plan_type, presence: true
 
    #has_many :subscriptions
 

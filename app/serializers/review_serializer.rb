@@ -4,11 +4,15 @@ class ReviewSerializer < ActiveModel::Serializer
 
   attribute :user_name do |object|
   object.object.user.name
-end
-attribute :car_name do |object|
-  object.object.car.name
-end
-attribute :variant_name do |object|
-  object.object.variant.variant
-end
+  end
+
+  attribute :car_name do |object|
+    object.object.car.name
+  end
+
+  attribute :variant_name do |object|
+    object.object.variant.present? ? object.object.variant.variant : nil
+  end
+
+
 end

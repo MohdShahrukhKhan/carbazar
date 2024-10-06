@@ -1,9 +1,9 @@
 
 class Offer < ApplicationRecord
-  belongs_to :car
+
   belongs_to :variant
-  # Assuming you have a Feature model, you can include this line if necessary
-  belongs_to :feature
+ 
+
 
  
 

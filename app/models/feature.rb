@@ -1,26 +1,42 @@
 class Feature < ApplicationRecord
- belongs_to :car
- has_many :offers,dependent: :destroy 
+
+
  # has_many :colours
  belongs_to :variant
 
 
-  ransack_alias :car_id_eq, :car
+  #  ransack_alias :car_id_eq, :variant_id_eq
+
+  # def self.ransackable_attributes(auth_object = nil)
+  #   super + ['variant_id', 'car_id'] # Allow searching by car_id
+  # end
+
+ # Ransack alias to search by the car name through the Variant association
+  # ransack_alias :car_name_eq, :car_name
+
+  # validates :variant, presence: true, uniqueness: true
+
+  # def self.ransackable_attributes(auth_object = nil)
+  #   super + ['car_id', 'car_name']
+  # end
+
+  ransack_alias :car_eq, :variant_id
 
   def self.ransackable_attributes(auth_object = nil)
-    super + ['car_id', 'variant_id']
+    super + ['variant_id', 'car']
   end
 
-  # def discounted_price
-  #   active_offer = offers.where('start_date <= ? AND end_date >= ?', Date.today, Date.today).first
 
-  #   if active_offer.present?
-  #     discount_amount = (price.to_f * active_offer.discount / 100)
-  #     price.to_f - discount_amount
-  #   else
-  #     price.to_f
-  #   end
-  # end
+  def discounted_price
+    active_offer = offers.where('start_date <= ? AND end_date >= ?', Date.today, Date.today).first
+
+    if active_offer.present?
+      discount_amount = (price.to_f * active_offer.discount / 100)
+      price.to_f - discount_amount
+    else
+      price.to_f
+    end
+  end
 
   validates :city_mileage, :fuel_type, :engine_displacement,
             :no_of_cylinders, :max_power, :max_torque, :seating_capacity, :transmission_type,
