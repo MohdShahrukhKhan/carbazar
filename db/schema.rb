@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_05_113822) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_06_133143) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -39,7 +39,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_05_113822) do
 
   create_table "bookings", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "car_id"
     t.integer "variant_id"
     t.integer "status", default: 0
     t.datetime "booking_date", null: false
@@ -74,7 +73,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_05_113822) do
   end
 
   create_table "features", force: :cascade do |t|
-    t.integer "car_id"
     t.integer "variant_id"
     t.string "city_mileage"
     t.string "fuel_type"
@@ -114,9 +112,24 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_05_113822) do
     t.decimal "discount"
     t.date "start_date"
     t.date "end_date"
-    t.integer "feature_id"
-    t.integer "car_id"
     t.integer "variant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "variant_id"
+    t.integer "quantity"
+    t.decimal "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.decimal "total_price", precision: 10, scale: 2
+    t.string "status", default: "pending"
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -177,11 +190,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_05_113822) do
     t.integer "car_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "quantity"
   end
 
   create_table "wishlists", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "car_id"
     t.integer "variant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

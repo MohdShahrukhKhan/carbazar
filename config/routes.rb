@@ -41,7 +41,7 @@ end
   end
 
   resources :notifications
-  resources :reviews, only: [:index, :create]
+  resources :reviews
 
 
  

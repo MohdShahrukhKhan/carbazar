@@ -1,29 +1,5 @@
-# # app/serializers/car_serializer.rb
-# class CarSerializer < ActiveModel::Serializer
-#   attributes :id, :name, :brand_id, :body_type, :car_types, :launch_date
-
-#   has_many :features, serializer: FeatureSerializer
-
-
-#    attribute :offers do |car|
-#     car.features.includes(:offers).map do |feature|
-#       feature.offers.map do |offer|
-#         {
-#           id: offer.id,
-#           offer_name: offer.offer_name,
-#           discount: offer.discount,
-#           start_date: offer.start_date,
-#           end_date: offer.end_date,
-#           discounted_price: offer.discounted_price # You can include discounted price here
-#         }
-#       end
-#     end.flatten # Flatten the array to get a single-level array of offers
-#   end
-
-# end
-
 class CarSerializer < ActiveModel::Serializer
-  attributes :id, :name, :body_type, :car_types, :launch_date, :offer_names, :variant_names
+  attributes :id, :name, :body_type, :car_types, :launch_date
 
 
 
@@ -36,17 +12,17 @@ class CarSerializer < ActiveModel::Serializer
       object.object.brand.name
     end
   has_many :variants
-  has_many :features
+  
   
 
   def variant_names
     object.variants.present? ? object.variants.pluck(:variant) : []
   end
 
-  def offer_names
-    # Check if offers exist, and return an array of offer names or an empty array if none exist
-    object.offers.present? ? object.offers.pluck(:offer_name) : []
-  end
+  # def offer_names
+  #   # Check if offers exist, and return an array of offer names or an empty array if none exist
+  #   object.offers.present? ? object.offers.pluck(:offer_name) : []
+  # end
 
 
  end

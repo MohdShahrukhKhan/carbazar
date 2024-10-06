@@ -37,6 +37,6 @@ end
   end
 
   def wishlist_params
-    params.require(:wishlist).permit(:car_id, :variant_id)
+    params.require(:wishlist).permit(:variant_id)
   end
 end

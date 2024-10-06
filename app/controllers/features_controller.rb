@@ -1,7 +1,7 @@
 class FeaturesController < ApplicationController
 def index
   # Use pagy for pagination with eager loading of offers
-  pagy, features = pagy(Feature.includes(:offers), items: 20)
+  pagy, features = pagy(Feature.all , items: 20)
 
   # Render JSON using the FeatureSerializer with pagination metadata
   render json: {
@@ -27,7 +27,7 @@ def create
   # Strong parameters to whitelist feature attributes for update
   def feature_params
    params.require(:feature).permit(
-      :car_id,:variant_id, :city_mileage, :fuel_type, :engine_displacement, :no_of_cylinders, 
+      :variant_id, :city_mileage, :fuel_type, :engine_displacement, :no_of_cylinders, 
       :max_power, :max_torque, :seating_capacity, :transmission_type, :boot_space, 
       :fuel_tank_capacity, :body_type, :ground_clearance_unladen, :power_steering, 
       :abs, :air_conditioner, :driver_airbag, :passenger_airbag, :automatic_climate_control, 

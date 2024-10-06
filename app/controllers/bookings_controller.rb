@@ -49,14 +49,24 @@ class BookingsController < ApplicationController
   before_action :set_booking, only: [:show, :update, :destroy]
   # before_action :authenticate_user!  # Ensure user is authenticated
 
+  # def index
+  #   if params[:status].present?
+  #     bookings = @current_user.bookings.where(status: params[:status]).includes(:car, :variant)
+  #   else
+  #     bookings = @current_user.bookings.includes(:car, :variant)
+  #   end
+  #   render json: bookings, include: [:car, :variant], status: :ok
+  # end
+
   def index
-    if params[:status].present?
-      bookings = @current_user.bookings.where(status: params[:status]).includes(:car, :variant)
-    else
-      bookings = @current_user.bookings.includes(:car, :variant)
-    end
-    render json: bookings, include: [:car, :variant], status: :ok
+  if params[:status].present?
+    bookings = @current_user.bookings.includes(:variant, :user).where(status: params[:status])
+  else
+    bookings = @current_user.bookings.includes(:variant, :user)
   end
+  render json: bookings, include: [:variant, :user], status: :ok
+end
+
 
   def show
   render json: {
@@ -69,7 +79,7 @@ end
   def create
     booking = @current_user.bookings.build(booking_params)  # Associate with current user
     if booking.save
-      render json: booking, include: [:car, :variant], status: :created
+      render json: booking, include: [:variant], status: :created
     else
       render json: { errors: booking.errors.full_messages }, status: :unprocessable_entity
     end
@@ -93,7 +103,7 @@ end
 
   def update
     if @booking.update(booking_params)
-      render json: @booking, include: [:car, :variant], status: :ok
+      render json: @booking, include: [:variant], status: :ok
     else
       render json: { errors: @booking.errors.full_messages }, status: :unprocessable_entity
     end
@@ -111,7 +121,7 @@ end
   end
 
   def booking_params
-    params.require(:booking).permit(:car_id, :variant_id, :status, :booking_date)
+    params.require(:booking).permit(:variant_id, :status, :booking_date)
   end
 end
 
