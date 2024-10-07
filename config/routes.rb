@@ -44,7 +44,12 @@ end
   resources :reviews
 
 
- 
+  post 'payments/purchase', to: 'payments#purchase'
+
+    resources :orders
+    resources :order_items
+
+
 
 
 

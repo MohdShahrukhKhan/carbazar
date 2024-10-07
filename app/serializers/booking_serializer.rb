@@ -59,28 +59,31 @@
 
 
 class BookingSerializer < ActiveModel::Serializer
-  attributes :id,:variant_id, :status, :booking_date
+  attributes :id,:variant_id, :status, :booking_date, :car_name
 
   # belongs_to :user  # Ensure this association is present
 
-  # attribute :user_name do |object|
-  #   object.user&.name || 'No user available'
-  # end  
+  attribute :user_name do |object|
+    object.object.user.name|| 'No user available'
+  end  
 
-  # attribute :variant_name do |object|
-  #   object.variant&.variant || 'No variant available'
-  # end
+  attribute :variant_name do |object|
+    object.object.variant.variant || 'No variant available'
+  end
 
-  # attribute :variant_price do |object|
-  #   object.variant&.price || 'Price not available'
-  # end
+  attribute :variant_price do |object|
+     object.object.variant.price || 'Price not available'
+  end
 
-  # attribute :car_name do |object|
-  #   object.car&.name || 'No car available'
-  # end
 
-  # attribute :offer_name do |object|
-  #   offer = object.variant&.offers&.last
-  #   offer&.offer_name || 'No offer available'
-  # end
+  def car_name
+    object.variant.car.name
+  end
+
+
+
+  attribute :discounted_price do |object|
+    object.object.variant.discounted_price || 'No variant available'
+  end
+
 end

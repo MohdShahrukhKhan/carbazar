@@ -9,6 +9,10 @@ class User < ApplicationRecord
     has_many :reviews
     has_many :orders
 
+    def self.ransackable_attributes(auth_object = nil)
+    super + ['name', 'email','password', 'password_confirmation']
+  end
+
 
   end
   
