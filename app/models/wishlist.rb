@@ -3,7 +3,7 @@ class Wishlist < ApplicationRecord
   belongs_to :variant
 
 
-# ransack_alias :user, :user_id
+ # ransack_alias :user, :user_id
 # ransack_alias :feature, :feature_id
 
 

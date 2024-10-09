@@ -66,7 +66,10 @@ class Car < ApplicationRecord
   end
 
 
- 
+  # ransack_alias :reviews_id_eq, :review_id
+  # def self.ransackable_associations(auth_object = nil)
+  #   super + ['reviews']
+  # end
 
 
   validates :name, presence: true
