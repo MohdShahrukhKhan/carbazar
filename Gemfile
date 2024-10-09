@@ -80,4 +80,3 @@ end
 gem 'dotenv-rails', groups: [:development, :test]
  gem 'pagy'
  gem 'stripe'
- gem 'arctic_admin'

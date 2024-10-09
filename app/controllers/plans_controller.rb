@@ -6,7 +6,7 @@ class PlansController < ApplicationController
 
   render json: {
     plans: ActiveModelSerializers::SerializableResource.new(plans, each_serializer: PlanSerializer),
-    meta: pagy_metadata(pagy)
+    meta: pagination_metadata(pagy)
   }
 end
 
@@ -41,6 +41,9 @@ end
     render json: { message: 'Plan successfully deleted.' }, status: :ok
   end
 
+
+
+
   private
 
   # Set plan for show, update, and destroy actions
@@ -52,7 +55,7 @@ end
 
   # Strong parameters for Plan
   def plan_params
-    params.require(:plan).permit(:name, :duration, :price, :details, :plan_type, :months, 
+    params.require(:plan).permit(:name, :price, :details, :plan_type, :months, 
                                  :price_monthly, :price_yearly, :limit, :limit_type, 
                                  :discount, :discount_type, :discount_percentage, 
                                  :benefits, :coming_soon, :active, :available)

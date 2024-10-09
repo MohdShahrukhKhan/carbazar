@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  # Devise routes for users and admin users
-  #devise_for :users
+  
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
@@ -44,10 +43,15 @@ end
   resources :reviews
 
 
-  post 'payments/purchase', to: 'payments#purchase'
+  resources :payments do 
+    collection do 
+      post :purchase_single_item
+    end
+  end
 
     resources :orders
     resources :order_items
+    resources :subscriptions
 
 
 

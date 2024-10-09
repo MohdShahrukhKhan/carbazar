@@ -8,16 +8,7 @@ ActiveAdmin.register OrderItem do
     column :variant
     column :quantity
     column :price
-    actions
   end
 
-  form do |f|
-    f.inputs do
-      f.input :order
-      f.input :variant
-      f.input :quantity
-      f.input :price
-    end
-    f.actions
-  end
+ 
 end
