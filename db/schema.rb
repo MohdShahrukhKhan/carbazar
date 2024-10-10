@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_06_133143) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_07_145933) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -136,7 +136,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_06_133143) do
 
   create_table "plans", force: :cascade do |t|
     t.string "name"
-    t.integer "duration"
     t.float "price"
     t.text "details"
     t.integer "plan_type"
@@ -154,6 +153,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_06_133143) do
     t.boolean "available", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "stripe_price_id"
+    t.decimal "discounted_price_monthly"
+    t.decimal "discounted_price_yearly"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -181,6 +183,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_06_133143) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "stripe_customer_id"
   end
 
   create_table "variants", force: :cascade do |t|

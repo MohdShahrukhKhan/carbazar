@@ -1,7 +1,3 @@
-//= require active_admin/base
-
-// app/assets/javascripts/active_admin/cars.js
-
 document.addEventListener("DOMContentLoaded", function() {
   const carTypeSelect = document.querySelector('#car_car_types');
   const launchDateInput = document.querySelector('#car_launch_date_input');
