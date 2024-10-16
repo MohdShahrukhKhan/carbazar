@@ -8,6 +8,8 @@ class Order < ApplicationRecord
   belongs_to :user
   has_many :order_items, dependent: :destroy
   accepts_nested_attributes_for :order_items, allow_destroy: true
+  #enum status: { pending: 0, confirmed: 1, canceled: 2, completed: 3 }
+
   
   validates :user_id, presence: true
   validates :total_price, numericality: { greater_than_or_equal_to: 0 }

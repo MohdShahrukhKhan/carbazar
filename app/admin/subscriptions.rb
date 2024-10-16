@@ -5,7 +5,7 @@ ActiveAdmin.register Subscription do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :plan_id, :user_id, :started_at, :expires_at
+   permit_params :plan_id, :user_id, :started_at, :expires_at
   #
   # or
   #

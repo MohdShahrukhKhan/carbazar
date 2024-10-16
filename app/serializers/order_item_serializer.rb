@@ -4,4 +4,6 @@ class OrderItemSerializer < ActiveModel::Serializer
 
   # If you want to include the variant details in the response
   belongs_to :variant
+
+  validates :quantity, numericality: { greater_than_or_equal_to: 1 }
 end

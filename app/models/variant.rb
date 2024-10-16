@@ -87,14 +87,22 @@ class Variant < ApplicationRecord
   ransack_alias :car_id_eq, :car
 
   validates :variant, presence: true, uniqueness: true
+  validates :price, presence: true
+  validates :quantity, numericality: { greater_than_or_equal_to: 0 }
+  validates :colour, presence: true 
 
   def self.ransackable_attributes(auth_object = nil)
     super + ['car_id']
   end
 
   def decrease_quantity
-    self.quantity -= 1 if self.quantity > 0
-    save
+    if quantity > 0
+      self.quantity -= 1
+      save # Ensure the changes are saved to the database
+      true
+    else
+      false
+    end
   end
 
   def discounted_price

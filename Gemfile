@@ -40,7 +40,7 @@ gem "devise"
 gem "activeadmin"
 
 # Use Sass to process CSS
-gem "sassc-rails"
+gem "sassc-rails"   
 
 # Use JWT for authentication
 gem "jwt"
@@ -51,6 +51,9 @@ gem "bcrypt", "~> 3.1.7"
 group :development, :test do
   # Debugging with the debug gem
   gem "debug", platforms: %i[mri mingw x64_mingw]
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem 'faker' 
 end
 
 group :development do
@@ -67,7 +70,7 @@ group :test do
   gem "selenium-webdriver"
   gem 'ransack'
   gem 'active_model_serializers'
-
+  gem 'shoulda-matchers', '~> 5.0'
 
 
 

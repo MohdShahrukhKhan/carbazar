@@ -1,3 +1,4 @@
+//= require active_admin/base
 document.addEventListener("DOMContentLoaded", function() {
   const carTypeSelect = document.querySelector('#car_car_types');
   const launchDateInput = document.querySelector('#car_launch_date_input');

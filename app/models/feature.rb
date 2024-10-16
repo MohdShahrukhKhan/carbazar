@@ -20,10 +20,10 @@ class Feature < ApplicationRecord
   #   super + ['car_id', 'car_name']
   # end
 
-  ransack_alias :car_eq, :variant_id
+  ransack_alias :variant_car_eq, :variant_id
 
   def self.ransackable_attributes(auth_object = nil)
-    super + ['variant_id', 'car']
+    super + ['variant_car_eq', 'variant_id_eq','car_eq']
   end
 
 
@@ -38,7 +38,7 @@ class Feature < ApplicationRecord
     end
   end
 
-  validates :city_mileage, :fuel_type, :engine_displacement,
+  validates :variant_id, :city_mileage, :fuel_type, :engine_displacement,
             :no_of_cylinders, :max_power, :max_torque, :seating_capacity, :transmission_type,
             :boot_space, :fuel_tank_capacity, :body_type, presence: true
 

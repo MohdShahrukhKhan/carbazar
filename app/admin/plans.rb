@@ -174,6 +174,10 @@ ActiveAdmin.register Plan do
                 :discount_type, :discount_percentage, :details, :plan_type, 
                 :active, :available, :stripe_price_id
 
+
+
+  filter :subscriptions_id
+
   # Index View customization
   index do
     selectable_column

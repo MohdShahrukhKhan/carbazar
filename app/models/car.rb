@@ -51,12 +51,7 @@ class Car < ApplicationRecord
   has_many :variants, dependent: :destroy
   accepts_nested_attributes_for :variants, allow_destroy: true
 
- # # Add Ransack alias for searching by car_id through variant
- #  ransack_alias :car_id_eq, :variant_id
 
- #  def self.ransackable_attributes(auth_object = nil)
- #    super + ['variant_id', 'car_id'] # Allow searching by car_id
- #  end
 
  # Allow Ransack to search by brand_id
   ransack_alias :brand_id_eq, :brand_id
@@ -66,10 +61,6 @@ class Car < ApplicationRecord
   end
 
 
-  # ransack_alias :reviews_id_eq, :review_id
-  # def self.ransackable_associations(auth_object = nil)
-  #   super + ['reviews']
-  # end
 
 
   validates :name, presence: true
@@ -91,9 +82,7 @@ class Car < ApplicationRecord
     end
   end
 
-  scope :by_price_range, ->(min, max) { where(price: min..max) }
   scope :by_body_type, ->(body_type) { where(body_type: body_type) }
-  scope :by_fuel_type, ->(fuel_type) { where(fuel_type: fuel_type) }
   scope :new_cars, -> { where(car_type: 'New Car') }
   scope :upcoming_cars, -> { where(car_type: 'Upcoming Car') }
 end

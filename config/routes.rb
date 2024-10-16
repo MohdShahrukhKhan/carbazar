@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
 
-  resources :cars
+  resources :cars do
+    collection do
+      get :last_seen
+    end
+  end
   resources :features 
   
 
@@ -19,7 +23,6 @@ Rails.application.routes.draw do
   resources :users do 
     collection do
       post :login
-      get :booking_history
     end
 
 end
@@ -34,8 +37,10 @@ end
   end
 
   resources :bookings do
-    member do
+    collection do
       patch :update_status
+      get :booking_history
+
     end
   end
 

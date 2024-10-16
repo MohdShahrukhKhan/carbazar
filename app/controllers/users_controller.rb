@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-skip_before_action :authorize_request, only: [:create, :login]
+skip_before_action :authorize_request, only: [:create, :update,:destroy, :login]
 
 
 def index
@@ -14,11 +14,39 @@ end
     
     if @user.save
   
-      render json: { message: 'user created', data:@user }, status: :ok
+      render json: { message: 'user created', data:@user }, status: :created
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
+
+
+  def update
+  @user = User.find(params[:id])
+  
+  if @user.update(user_params)
+    render json: { message: 'User updated', data: @user }, status: :ok
+  else
+     Rails.logger.debug(@user.errors.full_messages) # Debugging line
+     render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+  end
+rescue ActiveRecord::RecordNotFound
+  render json: { error: 'User not found' }, status: :not_found
+end
+
+
+
+
+
+def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    render json: { message: 'User deleted' }, status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: 'User not found' }, status: :not_found
+  end
+
 
 
   def login
@@ -31,11 +59,6 @@ end
     else
       render json: { error: 'Invalid email or password' }, status: :unauthorized
     end
-  end
-
-  def booking_history
-    @bookings = current_user.bookings.includes(:car, :variant).order(created_at: :desc)
-    render json: @bookings, include: [:car, :variant], status: :ok
   end
 
 

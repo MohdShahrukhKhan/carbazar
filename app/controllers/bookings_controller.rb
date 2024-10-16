@@ -1,127 +1,71 @@
-# class BookingsController < ApplicationController
-#   before_action :set_booking, only: [:show, :update, :destroy]
-#  # before_action :authenticate_user!  # Ensure user is authenticated
-
-#   def index
-#     bookings = current_user.bookings.includes(:car, :variant)
-#     render json: bookings, include: [:car, :variant], status: :ok
-#   end
-
-#   def show
-#     render json: @booking, include: [:car, :variant], status: :ok
-#   end
-
-#   def create
-#     booking = current_user.bookings.build(booking_params)  # Associate with current user
-#     if booking.save
-#       render json: booking, include: [:car, :variant], status: :created
-#     else
-#       render json: { errors: booking.errors.full_messages }, status: :unprocessable_entity
-#     end
-#   end
-
-#   def update
-#     if @booking.update(booking_params)
-#       render json: @booking, include: [:car, :variant], status: :ok
-#     else
-#       render json: { errors: @booking.errors.full_messages }, status: :unprocessable_entity
-#     end
-#   end
-
-#   def destroy
-#     @booking.destroy
-#     head :no_content
-#   end
-
-#   private
-
-#   def set_booking
-#     @booking = current_user.bookings.find(params[:id])  # Find booking for current user
-#   end
-
-#   def booking_params
-#     params.require(:booking).permit(:car_id, :variant_id, :status, :booking_date)
-#   end
-# end
 
 
 class BookingsController < ApplicationController
-  before_action :set_booking, only: [:show, :update, :destroy]
-  # before_action :authenticate_user!  # Ensure user is authenticated
+   before_action :set_booking, only: [:show, :destroy, :index]
+  # before_action :authenticate_user! # Assuming you're using Devise or a similar authentication system
 
-  # def index
-  #   if params[:status].present?
-  #     bookings = @current_user.bookings.where(status: params[:status]).includes(:car, :variant)
-  #   else
-  #     bookings = @current_user.bookings.includes(:car, :variant)
-  #   end
-  #   render json: bookings, include: [:car, :variant], status: :ok
-  # end
-
+  # GET /bookings
   def index
-  if params[:status].present?
-    bookings = @current_user.bookings.includes(:variant, :user).where(status: params[:status])
+  if @current_user
+    bookings = current_user.bookings.includes(:variant).order(created_at: :desc)
+    render json: bookings, include: [:variant], status: :ok
   else
-    bookings = @current_user.bookings.includes(:variant, :user)
+    render json: { error: 'User not authenticated' }, status: :unauthorized
   end
-  render json: bookings, include: [:variant, :user], status: :ok
 end
 
-
+  # GET /bookings/:id
   def show
-  render json: {
-    booking: @booking,
-    history: @booking.history,
-    notifications: @booking.notifications # If you want to include notifications
-  }
-end
-
-  def create
-    booking = @current_user.bookings.build(booking_params)  # Associate with current user
-    if booking.save
-      render json: booking, include: [:variant], status: :created
-    else
-      render json: { errors: booking.errors.full_messages }, status: :unprocessable_entity
-    end
-
-  end
-
-# def update_status
-#   if @booking.update(status: params[:status])
-#     # Create a notification for the user
-#     Notification.create(user: @booking.user, booking: @booking, content: "Your booking status has been updated to #{params[:status]}")
-#     # Add a record to history
-#     @booking.history << { status: params[:status], updated_at: Time.current }
-#     @booking.save
-#     render json: @booking, status: :ok
-#   else
-#     render json: { errors: @booking.errors.full_messages }, status: :unprocessable_entity
-#   end
-# end
-
-
-
-  def update
-    if @booking.update(booking_params)
+    if @booking
       render json: @booking, include: [:variant], status: :ok
     else
-      render json: { errors: @booking.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: 'Booking not found' }, status: :not_found
     end
   end
 
+  # POST /bookings
+  def create
+    if current_user
+      booking = current_user.bookings.build(booking_params)
+      if booking.save
+        render json: booking, status: :created
+      else
+        render json: { errors: booking.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: 'User not authenticated' }, status: :unauthorized
+    end
+  end
+
+
+  def booking_history
+    if current_user
+      bookings = current_user.bookings.includes(:variant).where(status: 'confirmed')
+      render json: bookings, include: [:variant], status: :ok
+    else
+      render json: { error: 'User not authenticated' }, status: :unauthorized
+    end
+ end
+
+  # DELETE /bookings/:id
   def destroy
-    @booking.destroy
-    head :no_content
+    if @booking
+      @booking.destroy
+      render json: { message: 'Booking deleted successfully' }, status: :ok
+    else
+      render json: { error: 'Booking not found' }, status: :not_found
+    end
   end
 
   private
 
+  # Set booking for show and destroy actions
   def set_booking
-    @booking = current_user.bookings.find(params[:id])  # Find booking for current user
+    @booking = current_user.bookings.find_by(id: params[:id])
   end
 
+  # Strong parameters for bookings
   def booking_params
-    params.require(:booking).permit(:variant_id, :status, :booking_date)
+    params.require(:booking).permit(:variant_id, :booking_date, :status)
   end
 end
-
