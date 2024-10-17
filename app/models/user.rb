@@ -7,12 +7,18 @@ class User < ApplicationRecord
   has_many :orders
   has_one :subscription
 
+  enum role: { customer: 'customer', dealer: 'dealer' }
+
+  validates :role, inclusion: { in: roles.keys }
+
+
+
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true  # Only check for uniqueness (case-sensitive)
   validates :password, presence: true, length: { minimum: 6 }
 
   def self.ransackable_attributes(auth_object = nil)
-    super + ['name', 'email', 'password', 'password_confirmation']
+    super + ['name', 'email', 'password', 'password_confirmation','role']
   end
 
   def subscription_active?

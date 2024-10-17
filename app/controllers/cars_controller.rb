@@ -47,6 +47,9 @@ class CarsController < ApplicationController
     end
   end
 
+    
+
+
   # POST /cars
   def create
     @car = Car.new(car_params)

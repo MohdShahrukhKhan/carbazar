@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_07_145933) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_17_080907) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -58,16 +58,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_145933) do
     t.string "body_type"
     t.string "car_types"
     t.date "launch_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "dealers", force: :cascade do |t|
-    t.string "name"
-    t.integer "brand_id"
-    t.string "city"
-    t.string "address"
-    t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -184,6 +174,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_145933) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "stripe_customer_id"
+    t.string "role"
   end
 
   create_table "variants", force: :cascade do |t|

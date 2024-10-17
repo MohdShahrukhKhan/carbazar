@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :cars do
     collection do
       get :last_seen
+      
     end
   end
   resources :features 

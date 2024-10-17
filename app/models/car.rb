@@ -53,6 +53,7 @@ class Car < ApplicationRecord
 
 
 
+
  # Allow Ransack to search by brand_id
   ransack_alias :brand_id_eq, :brand_id
 
@@ -85,4 +86,6 @@ class Car < ApplicationRecord
   scope :by_body_type, ->(body_type) { where(body_type: body_type) }
   scope :new_cars, -> { where(car_type: 'New Car') }
   scope :upcoming_cars, -> { where(car_type: 'Upcoming Car') }
+
+  
 end
