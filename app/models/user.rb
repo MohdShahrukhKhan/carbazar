@@ -7,6 +7,16 @@ class User < ApplicationRecord
   has_many :orders
   has_one :subscription
 
+
+ def customer?
+    role == 'customer'
+  end
+
+  def dealer?
+    role == 'dealer'
+  end
+  
+
   enum role: { customer: 'customer', dealer: 'dealer' }
 
   validates :role, inclusion: { in: roles.keys }

@@ -11,7 +11,13 @@ Rails.application.routes.draw do
     end
   end
   resources :features 
-  
+
+  resources :chats, only: [:create, :show] do
+  resources :messages, only: [:create]
+  end
+
+  # WebSocket Cable requests
+  mount ActionCable.server => '/cable'
 
 
   resources :offers
@@ -19,7 +25,6 @@ Rails.application.routes.draw do
   resources :brands
 
 
-  resources :dealers
 
   resources :users do 
     collection do
