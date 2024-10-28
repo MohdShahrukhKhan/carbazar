@@ -1,60 +1,36 @@
+# app/controllers/order_items_controller.rb
 class OrderItemsController < ApplicationController
-  before_action :set_order_item, only: [:show, :update, :destroy]
+  before_action :authenticate_user!
 
-  # GET /order_items
   def index
-    @order_items = OrderItem.all
+    if current_user
+      @orders = if current_user.customer?
+                  # Customers can see only their own orders
+                  current_user.orders.includes(order_items: { variant: :car }).order(created_at: :desc)
+                elsif current_user.dealer?
+                  # Dealers can see orders that contain variants of cars they own
+                  dealer_car_ids = Car.where(user_id: current_user.id).pluck(:id)
+                  dealer_variant_ids = Variant.where(car_id: dealer_car_ids).pluck(:id)
+                  Order.joins(order_items: :variant)
+                       .includes(order_items: { variant: :car })
+                       .where(order_items: { variant_id: dealer_variant_ids })
+                       .distinct.order(created_at: :desc)
+                else
+                  render json: { error: 'Role not recognized' }, status: :unprocessable_entity and return
+                end
 
-    # Calculate total quantity and total price of all order items
-    total_quantity = @order_items.sum(:quantity)
-    total_price = @order_items.sum("quantity * price")
-
-    render json: {
-      order_items: @order_items,
-      total_quantity: total_quantity,
-      total_price: total_price
-    }, each_serializer: OrderItemSerializer, status: :ok
-  end
-
-  # POST /order_items
-  def create
-    order_item = OrderItem.new(order_item_params)
-
-    if order_item.save
-      render json: order_item, serializer: OrderItemSerializer, status: :created
+      render json: @orders, each_serializer: OrderSerializer, status: :ok
     else
-      render json: { errors: order_item.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: 'User not authenticated' }, status: :unauthorized
     end
-  end
-
-  # GET /order_items/:id
-  def show
-    render json: @order_item, serializer: OrderItemSerializer, status: :ok
-  end
-
-  # PATCH/PUT /order_items/:id
-  def update
-    if @order_item.update(order_item_params)
-      render json: @order_item, serializer: OrderItemSerializer, status: :ok
-    else
-      render json: { errors: @order_item.errors.full_messages }, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /order_items/:id
-  def destroy
-    @order_item.destroy
-    head :no_content
   end
 
   private
 
-  def set_order_item
-    @order_item = OrderItem.find_by(id: params[:id])
-    render json: { error: 'Order Item not found' }, status: :not_found unless @order_item
-  end
-
-  def order_item_params
-    params.require(:order_item).permit(:order_id, :variant_id, :quantity, :price)
+  # Assuming there's a method to check if the user is authenticated
+  def authenticate_user!
+    unless current_user
+      render json: { error: 'User not authenticated' }, status: :unauthorized
+    end
   end
 end

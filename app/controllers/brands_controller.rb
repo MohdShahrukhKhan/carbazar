@@ -39,6 +39,12 @@ class BrandsController < ApplicationController
     head :no_content
   end
 
+ def popular
+    popular_brands = Brand.popular
+    render json: popular_brands, each_serializer: BrandSerializer, status: :ok
+  end
+  
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

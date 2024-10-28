@@ -6,7 +6,11 @@ class User < ApplicationRecord
   has_many :reviews
   has_many :orders
   has_one :subscription
+  has_many :cars, dependent: :destroy  # Associate user with cars
+  has_many :comments, dependent: :destroy
 
+
+  validates :address, :brand, :mobile_number, :city, presence: true, if: -> { role == 'dealer' }
 
  def customer?
     role == 'customer'

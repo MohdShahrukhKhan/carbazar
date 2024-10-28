@@ -1,15 +1,10 @@
 class Brand < ApplicationRecord
   has_many :cars
-  validates :name, presence: true
 
-  
+  validates :name, presence: true, uniqueness: true
 
-  
-
-  # def self.ransackable_attributes(auth_object = nil)
-  #   ["created_at", "id", "name", "updated_at"]
-  # end
-  # def self.ransackable_associations(auth_object = nil)
-  #   ["new_cars", "upcoming_cars"]
-  # end
+  # Assuming popularity is based on the total number of orders across all variants under this brand
+  scope :popular, -> {
+    joins(cars: :order_items).group(:id).order('COUNT(order_items.id) DESC')
+  }
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_17_100506) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_20_165549) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -60,11 +60,32 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_17_100506) do
     t.date "launch_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
   create_table "chats", force: :cascade do |t|
     t.integer "customer_id"
     t.integer "dealer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "review_id", null: false
+    t.integer "user_id", null: false
+    t.text "text", null: false
+    t.integer "parent_comment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_comment_id"], name: "index_comments_on_parent_comment_id"
+  end
+
+  create_table "dealers", force: :cascade do |t|
+    t.string "name"
+    t.integer "brand_id"
+    t.string "city"
+    t.string "address"
+    t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -165,9 +186,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_17_100506) do
 
   create_table "reviews", force: :cascade do |t|
     t.integer "rating"
-    t.text "comment"
     t.integer "user_id"
-    t.integer "car_id"
     t.integer "variant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -190,6 +209,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_17_100506) do
     t.datetime "updated_at", null: false
     t.string "stripe_customer_id"
     t.string "role"
+    t.string "address"
+    t.string "brand"
+    t.string "mobile_number"
+    t.string "city"
   end
 
   create_table "variants", force: :cascade do |t|
@@ -209,4 +232,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_17_100506) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "comments", "comments", column: "parent_comment_id"
+  add_foreign_key "comments", "reviews"
+  add_foreign_key "comments", "users"
 end
