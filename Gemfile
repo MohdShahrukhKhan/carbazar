@@ -87,3 +87,8 @@ gem 'dotenv-rails', groups: [:development, :test]
 
 
  gem "rack-cors"
+
+
+ gem 'active_admin_flat_skin'
+
+ gem 'font-awesome-rails'

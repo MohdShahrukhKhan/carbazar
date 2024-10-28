@@ -1,18 +1,14 @@
 # app/serializers/review_serializer.rb
 class ReviewSerializer < ActiveModel::Serializer
-  attributes :id, :rating, :comment
+  attributes :id, :rating, :user_name, :variant_name
 
-  attribute :user_name do |object|
-  object.object.user.name
+  has_many :comments, serializer: CommentSerializer
+
+  def user_name
+    object.user.name
   end
 
-  attribute :car_name do |object|
-    object.object.car.name
+  def variant_name
+    object.variant&.variant
   end
-
-  attribute :variant_name do |object|
-    object.object.variant.present? ? object.object.variant.variant : nil
-  end
-
-
 end

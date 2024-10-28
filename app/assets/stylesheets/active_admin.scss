@@ -10,8 +10,30 @@
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
+// Include the Flat Skin theme
+@import "active_admin_flat_skin";
+// Include Font Awesome
+@import "font-awesome.css";  
+
+
 
 // Overriding any non-variable Sass must be done after the fact.
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+
+
+#active_admin_content #sidebar {
+
+    margin-top: -30px;
+}
+
+#active_admin_content.with_sidebar #main_content {
+
+    margin-top: 80px;
+}
+
+header.header .site_title {
+  background-color: #3ce7e0;
+}
